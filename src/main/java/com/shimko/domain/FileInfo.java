@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.sql.Timestamp;
@@ -24,7 +25,7 @@ public class FileInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
+    private Integer id;
 
     /**
      * Дата создания
@@ -36,7 +37,7 @@ public class FileInfo {
      * Дата изменения
      */
     @Column(name = "change_date")
-    private Timestamp sysname;
+    private Timestamp changeDate;
 
     /**
      * Наименование файла
@@ -47,8 +48,8 @@ public class FileInfo {
     /**
      * Идентификатор типа
      */
-    @Column(name = "mimetype_id")
-    private Integer mimetypeId;
+    @OneToOne
+    private MimeType mimetype;
 
     /**
      * Размер файла
@@ -59,26 +60,40 @@ public class FileInfo {
     /**
      * Файл
      */
-    @Column(name = "file_id")
-    private Integer file;
+    @OneToOne
+    private File file;
 
-    public FileInfo(final Long id, final Timestamp createDate, final Timestamp sysname, final String filename,
-                    final Integer mimetypeId,
-                    final Long size, final Integer file) {
-        this.id = id;
+    public FileInfo() {
+    }
+
+    public FileInfo(final Timestamp createDate, final Timestamp changeDate, final String filename,
+                    final MimeType mimetype, final Long size, final File file) {
+
         this.createDate = createDate;
-        this.sysname = sysname;
+        this.changeDate = changeDate;
         this.filename = filename;
-        this.mimetypeId = mimetypeId;
+        this.mimetype = mimetype;
         this.size = size;
         this.file = file;
     }
 
-    public Long getId() {
+    public FileInfo(final Integer id, final Timestamp createDate, final Timestamp changeDate, final String filename,
+                    final MimeType mimetype,
+                    final Long size, final File file) {
+        this.id = id;
+        this.createDate = createDate;
+        this.changeDate = changeDate;
+        this.filename = filename;
+        this.mimetype = mimetype;
+        this.size = size;
+        this.file = file;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(final Long id) {
+    public void setId(final Integer id) {
         this.id = id;
     }
 
@@ -90,12 +105,12 @@ public class FileInfo {
         this.createDate = createDate;
     }
 
-    public Timestamp getSysname() {
-        return sysname;
+    public Timestamp getChangeDate() {
+        return changeDate;
     }
 
-    public void setSysname(final Timestamp sysname) {
-        this.sysname = sysname;
+    public void setChangeDate(final Timestamp changeDate) {
+        this.changeDate = changeDate;
     }
 
     public String getFilename() {
@@ -106,12 +121,12 @@ public class FileInfo {
         this.filename = filename;
     }
 
-    public Integer getMimetypeId() {
-        return mimetypeId;
+    public MimeType getMimetype() {
+        return mimetype;
     }
 
-    public void setMimetypeId(final Integer mimetypeId) {
-        this.mimetypeId = mimetypeId;
+    public void setMimetype(final MimeType mimetype) {
+        this.mimetype = mimetype;
     }
 
     public Long getSize() {
@@ -122,11 +137,11 @@ public class FileInfo {
         this.size = size;
     }
 
-    public Integer getFile() {
+    public File getFile() {
         return file;
     }
 
-    public void setFile(final Integer file) {
+    public void setFile(final File file) {
         this.file = file;
     }
 
@@ -137,9 +152,9 @@ public class FileInfo {
         final FileInfo fileInfo = (FileInfo)o;
         return Objects.equal(id, fileInfo.id)
             && Objects.equal(createDate, fileInfo.createDate)
-            && Objects.equal(sysname, fileInfo.sysname)
+            && Objects.equal(changeDate, fileInfo.changeDate)
             && Objects.equal(filename, fileInfo.filename)
-            && Objects.equal(mimetypeId, fileInfo.mimetypeId)
+            && Objects.equal(mimetype, fileInfo.mimetype)
             && Objects.equal(size, fileInfo.size)
             && Objects.equal(file, fileInfo.file);
     }
@@ -147,7 +162,7 @@ public class FileInfo {
     @Override
     public int hashCode() {
         return Objects.hashCode(
-            id, createDate, sysname, filename, mimetypeId, size, file
+            id, createDate, changeDate, filename, mimetype, size, file
         );
     }
 
@@ -156,9 +171,9 @@ public class FileInfo {
         return "FileInfo{"
             + "id=" + id
             + ", createDate=" + createDate
-            + ", sysname=" + sysname
+            + ", changeDate=" + changeDate
             + ", filename='" + filename + '\''
-            + ", mimetypeId=" + mimetypeId
+            + ", mimetype=" + mimetype
             + ", size=" + size
             + ", file=" + file
             + '}';

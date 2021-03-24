@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.Arrays;
@@ -25,7 +26,7 @@ public class File {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
+    private Integer id;
 
     /**
      * Данные
@@ -34,23 +35,27 @@ public class File {
     @Type(type="org.hibernate.type.BinaryType")
     private byte[] data;
 
-    /**
-     * Флаг на удаление
-     */
-    @Column(name = "sysname")
-    private Boolean toDelete;
+    @OneToOne
+    private FileInfo fileInfo;
 
-    public File(final Long id, final byte[] data, final Boolean toDelete) {
-        this.id = id;
-        this.data = data;
-        this.toDelete = toDelete;
+    public File() {
     }
 
-    public Long getId() {
+    public File(final byte[] data) {
+        this.data = data;
+    }
+
+    public File(final Integer id, final byte[] data, final FileInfo fileInfo) {
+        this.id = id;
+        this.data = data;
+        this.fileInfo = fileInfo;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(final Long id) {
+    public void setId(final Integer id) {
         this.id = id;
     }
 
@@ -62,12 +67,12 @@ public class File {
         this.data = data;
     }
 
-    public Boolean getToDelete() {
-        return toDelete;
+    public FileInfo getFileInfo() {
+        return fileInfo;
     }
 
-    public void setToDelete(final Boolean toDelete) {
-        this.toDelete = toDelete;
+    public void setFileInfo(final FileInfo fileInfo) {
+        this.fileInfo = fileInfo;
     }
 
     @Override
@@ -77,13 +82,13 @@ public class File {
         final File file = (File)o;
         return Objects.equal(id, file.id)
             && Objects.equal(data, file.data)
-            && Objects.equal(toDelete, file.toDelete);
+            && Objects.equal(fileInfo, file.fileInfo);
     }
 
     @Override
     public int hashCode() {
         return Objects.hashCode(
-            id, data, toDelete
+            id, data, fileInfo
         );
     }
 
@@ -92,7 +97,7 @@ public class File {
         return "File{"
             + "id=" + id
             + ", data=" + Arrays.toString(data)
-            + ", toDelete=" + toDelete
+            + ", fileInfo=" + fileInfo
             + '}';
     }
 }

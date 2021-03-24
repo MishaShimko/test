@@ -2,6 +2,7 @@ package com.shimko;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
  * @author Shimko
@@ -10,10 +11,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 
 @SpringBootApplication
+@EnableJpaRepositories(basePackages = {"com.shimko.repository"})
 public class Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(new Class<?>[] {Application.class, JpaConfig.class}, args);
+        SpringApplication.run(new Class<?>[] {Application.class}, args);
     }
 
 }
