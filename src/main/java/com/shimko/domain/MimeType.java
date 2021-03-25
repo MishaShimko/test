@@ -7,10 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * @author Shimko
@@ -33,8 +35,9 @@ public class MimeType implements Serializable {
     @Column(name = "sysname")
     private String sysname;
 
-    @OneToOne
-    private FileInfo fileInfo;
+    @OneToMany
+    @PrimaryKeyJoinColumn
+    private Set<FileInfo> fileInfo;
 
     public MimeType() {
     }
@@ -43,7 +46,7 @@ public class MimeType implements Serializable {
         this.sysname = sysname;
     }
 
-    public MimeType(final Integer id, final String sysname, final FileInfo fileInfo) {
+    public MimeType(final Integer id, final String sysname, final Set<FileInfo> fileInfo) {
         this.id = id;
         this.sysname = sysname;
         this.fileInfo = fileInfo;
@@ -65,11 +68,11 @@ public class MimeType implements Serializable {
         this.sysname = sysname;
     }
 
-    public FileInfo getFileInfo() {
+    public Set<FileInfo> getFileInfo() {
         return fileInfo;
     }
 
-    public void setFileInfo(final FileInfo fileInfo) {
+    public void setFileInfo(final Set<FileInfo> fileInfo) {
         this.fileInfo = fileInfo;
     }
 

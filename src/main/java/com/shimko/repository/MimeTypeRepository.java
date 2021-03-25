@@ -15,4 +15,6 @@ public interface MimeTypeRepository extends JpaRepository<MimeType, Integer> {
 
     MimeType findBySysname(final String sysname);
 
+    Integer countBySysname(final String sysname);
+
 }

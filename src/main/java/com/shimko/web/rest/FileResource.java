@@ -1,5 +1,6 @@
 package com.shimko.web.rest;
 
+import com.shimko.service.FileInfoService;
 import com.shimko.service.FileService;
 import com.shimko.service.dto.FileDto;
 import com.shimko.service.dto.FileInfoDto;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 import static org.apache.tomcat.util.http.fileupload.FileUploadBase.MULTIPART_FORM_DATA;
 
 /**
@@ -29,24 +32,26 @@ import static org.apache.tomcat.util.http.fileupload.FileUploadBase.MULTIPART_FO
 public class FileResource {
 
     private final FileService fileService;
+    private final FileInfoService fileInfoService;
 
     @Autowired
-    public FileResource(FileService fileService) {
+    public FileResource(final FileService fileService, final FileInfoService fileInfoService) {
         this.fileService = fileService;
+        this.fileInfoService = fileInfoService;
     }
 
     @RequestMapping(value = "/files/upload", method = RequestMethod.POST, consumes = MULTIPART_FORM_DATA)
-    public ResponseEntity<FileInfoDto> addFile(@RequestParam("file") final MultipartFile file) {
+    public ResponseEntity<FileInfoDto> upload(@RequestParam("file") final MultipartFile file) throws IOException{
 
-        final FileInfoDto fileInfoDto = fileService.create(file);
+        final FileInfoDto fileInfoDto = fileInfoService.create(file);
 
         return new ResponseEntity<>(fileInfoDto, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/files/{fileId}", method = RequestMethod.GET)
-    public HttpEntity<byte[]> getFile(@PathVariable("fileId") final Integer fileId) {
+    public HttpEntity<byte[]> find(@PathVariable("fileId") final Integer fileId) {
 
-        final FileDto fileDto = fileService.findFile(fileId);
+        final FileDto fileDto = fileService.getFile(fileId);
 
         HttpHeaders header = new HttpHeaders();
 
@@ -57,4 +62,20 @@ public class FileResource {
         return new HttpEntity<>(fileDto.getData(), header);
     }
 
+    @RequestMapping(value = "/files/{fileId}", method = RequestMethod.POST)
+    public ResponseEntity<FileInfoDto> update(@PathVariable("fileId") final Integer fileId,
+                                              @RequestParam("file") final MultipartFile file) throws IOException {
+
+        final FileInfoDto fileInfoDto = fileInfoService.update(fileId, file);
+
+        return new ResponseEntity<>(fileInfoDto, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/files/{fileId}", method = RequestMethod.DELETE)
+    public ResponseEntity<FileInfoDto> delete(@PathVariable("fileId") final Integer fileId) {
+
+        fileInfoService.delete(fileId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
