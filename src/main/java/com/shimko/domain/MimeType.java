@@ -1,6 +1,8 @@
 package com.shimko.domain;
 
-import com.google.common.base.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,8 +22,11 @@ import java.util.Set;
  * @time 22:29
  */
 
+@Data
 @Entity
 @Table(name = "mime_types")
+@AllArgsConstructor
+@NoArgsConstructor
 public class MimeType implements Serializable {
 
     @Id
@@ -39,66 +44,8 @@ public class MimeType implements Serializable {
     @PrimaryKeyJoinColumn
     private Set<FileInfo> fileInfo;
 
-    public MimeType() {
-    }
 
     public MimeType(final String sysname) {
         this.sysname = sysname;
-    }
-
-    public MimeType(final Integer id, final String sysname, final Set<FileInfo> fileInfo) {
-        this.id = id;
-        this.sysname = sysname;
-        this.fileInfo = fileInfo;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(final Integer id) {
-        this.id = id;
-    }
-
-    public String getSysname() {
-        return sysname;
-    }
-
-    public void setSysname(final String sysname) {
-        this.sysname = sysname;
-    }
-
-    public Set<FileInfo> getFileInfo() {
-        return fileInfo;
-    }
-
-    public void setFileInfo(final Set<FileInfo> fileInfo) {
-        this.fileInfo = fileInfo;
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (!(o instanceof MimeType)) return false;
-        final MimeType mimeType = (MimeType)o;
-        return Objects.equal(id, mimeType.id)
-            && Objects.equal(sysname, mimeType.sysname)
-            && Objects.equal(fileInfo, mimeType.fileInfo);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(
-            id, sysname, fileInfo
-        );
-    }
-
-    @Override
-    public String toString() {
-        return "MimeType{"
-            + "id=" + id
-            + ", sysname='" + sysname + '\''
-            + ", fileInfo=" + fileInfo
-            + '}';
     }
 }

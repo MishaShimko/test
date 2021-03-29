@@ -1,0 +1,84 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: misha
+      changes:
+        - createTable:
+            tableName: files
+            columns:
+              - column:
+                  name: id
+                  type: integer
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: data
+                  type: bytea
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 2
+      author: misha
+      changes:
+        - createTable:
+            tableName: mime_types
+            columns:
+              - column:
+                  name: id
+                  type: integer
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: sysname
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 3
+      author: misha
+      changes:
+        - createTable:
+            tableName: file_infos
+            columns:
+              - column:
+                  name: id
+                  type: integer
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: change_date
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: create_date
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: filename
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: size
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: file_id
+                  type: integer
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_fileinfos_file
+                    references: files(id)
+              - column:
+                  name: mimetype_id
+                  type: integer
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_fileinfos_mimetype
+                    references: mime_types(id)

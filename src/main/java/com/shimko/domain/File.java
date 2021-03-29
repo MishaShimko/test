@@ -1,6 +1,8 @@
 package com.shimko.domain;
 
-import com.google.common.base.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.CascadeType;
@@ -13,7 +15,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import java.util.Arrays;
 
 /**
  * @author Shimko
@@ -21,8 +22,11 @@ import java.util.Arrays;
  * @time 22:36
  */
 
+@Data
 @Entity
 @Table(name = "files")
+@NoArgsConstructor
+@AllArgsConstructor
 public class File {
 
     @Id
@@ -41,66 +45,7 @@ public class File {
     @PrimaryKeyJoinColumn
     private FileInfo fileInfo;
 
-    public File() {
-    }
-
     public File(final byte[] data) {
         this.data = data;
-    }
-
-    public File(final Integer id, final byte[] data, final FileInfo fileInfo) {
-        this.id = id;
-        this.data = data;
-        this.fileInfo = fileInfo;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(final Integer id) {
-        this.id = id;
-    }
-
-    public byte[] getData() {
-        return data;
-    }
-
-    public void setData(final byte[] data) {
-        this.data = data;
-    }
-
-    public FileInfo getFileInfo() {
-        return fileInfo;
-    }
-
-    public void setFileInfo(final FileInfo fileInfo) {
-        this.fileInfo = fileInfo;
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (!(o instanceof File)) return false;
-        final File file = (File)o;
-        return Objects.equal(id, file.id)
-            && Objects.equal(data, file.data)
-            && Objects.equal(fileInfo, file.fileInfo);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(
-            id, data, fileInfo
-        );
-    }
-
-    @Override
-    public String toString() {
-        return "File{"
-            + "id=" + id
-            + ", data=" + Arrays.toString(data)
-            + ", fileInfo=" + fileInfo
-            + '}';
     }
 }

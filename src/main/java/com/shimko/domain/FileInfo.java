@@ -1,6 +1,8 @@
 package com.shimko.domain;
 
-import com.google.common.base.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import java.sql.Timestamp;
 
 /**
  * @author Shimko
@@ -22,6 +23,9 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "file_infos")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class FileInfo {
 
     @Id
@@ -33,13 +37,13 @@ public class FileInfo {
      * Дата создания
      */
     @Column(name = "create_date")
-    private Timestamp createDate;
+    private Long createDate;
 
     /**
      * Дата изменения
      */
     @Column(name = "change_date")
-    private Timestamp changeDate;
+    private Long changeDate;
 
     /**
      * Наименование файла
@@ -65,10 +69,7 @@ public class FileInfo {
     @OneToOne(cascade=CascadeType.ALL, orphanRemoval = true)
     private File file;
 
-    public FileInfo() {
-    }
-
-    public FileInfo(final Timestamp createDate, final Timestamp changeDate, final String filename,
+    public FileInfo(final Long createDate, final Long changeDate, final String filename,
                     final MimeType mimetype, final Long size, final File file) {
 
         this.createDate = createDate;
@@ -77,107 +78,5 @@ public class FileInfo {
         this.mimetype = mimetype;
         this.size = size;
         this.file = file;
-    }
-
-    public FileInfo(final Integer id, final Timestamp createDate, final Timestamp changeDate, final String filename,
-                    final MimeType mimetype,
-                    final Long size, final File file) {
-        this.id = id;
-        this.createDate = createDate;
-        this.changeDate = changeDate;
-        this.filename = filename;
-        this.mimetype = mimetype;
-        this.size = size;
-        this.file = file;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(final Integer id) {
-        this.id = id;
-    }
-
-    public Timestamp getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(final Timestamp createDate) {
-        this.createDate = createDate;
-    }
-
-    public Timestamp getChangeDate() {
-        return changeDate;
-    }
-
-    public void setChangeDate(final Timestamp changeDate) {
-        this.changeDate = changeDate;
-    }
-
-    public String getFilename() {
-        return filename;
-    }
-
-    public void setFilename(final String filename) {
-        this.filename = filename;
-    }
-
-    public MimeType getMimetype() {
-        return mimetype;
-    }
-
-    public void setMimetype(final MimeType mimetype) {
-        this.mimetype = mimetype;
-    }
-
-    public Long getSize() {
-        return size;
-    }
-
-    public void setSize(final Long size) {
-        this.size = size;
-    }
-
-    public File getFile() {
-        return file;
-    }
-
-    public void setFile(final File file) {
-        this.file = file;
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (!(o instanceof FileInfo)) return false;
-        final FileInfo fileInfo = (FileInfo)o;
-        return Objects.equal(id, fileInfo.id)
-            && Objects.equal(createDate, fileInfo.createDate)
-            && Objects.equal(changeDate, fileInfo.changeDate)
-            && Objects.equal(filename, fileInfo.filename)
-            && Objects.equal(mimetype, fileInfo.mimetype)
-            && Objects.equal(size, fileInfo.size)
-            && Objects.equal(file, fileInfo.file);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(
-            id, createDate, changeDate, filename, mimetype, size, file
-        );
-    }
-
-    @Override
-    public String toString() {
-        return "FileInfo{"
-            + "id=" + id
-            + ", createDate=" + createDate
-            + ", changeDate=" + changeDate
-            + ", filename='" + filename + '\''
-            + ", mimetype=" + mimetype
-            + ", size=" + size
-            + ", file=" + file
-            + '}';
     }
 }
